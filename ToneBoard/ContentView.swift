@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  ToneBoard
-//
-//  Created by Matthew Vulin on 3/24/26.
-//
-
 import SwiftUI
 
 enum ToneOption: String, CaseIterable {
@@ -23,13 +16,21 @@ struct ContentView: View {
     @AppStorage("selectedTone", store: UserDefaults(suiteName: "group.com.matt.cpplearning.ToneBoard"))
     var selectedTone: ToneOption = .professional
     
+    @AppStorage("apiUrl", store: UserDefaults(suiteName: "group.com.matt.cpplearning.ToneBoard"))
+    var apiUrl: String = "http://127.0.0.1:1234/v1"
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section(header: Text("Configuration"), footer: Text("Your API key is stored locally in the App Group and shared securely with the keyboard extension.")) {
-                    SecureField("OpenAI / Groq API Key", text: $apiKey)
+                    SecureField("xAI / Groq API Key", text: $apiKey)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
+                        
+                    TextField("API Base URL", text: $apiUrl)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.URL)
                     
                     Picker("Auto-Polish Tone", selection: $selectedTone) {
                         ForEach(ToneOption.allCases, id: \.self) { tone in
@@ -62,8 +63,4 @@ struct ContentView: View {
             UIApplication.shared.open(url)
         }
     }
-}
-
-#Preview {
-    ContentView()
 }
